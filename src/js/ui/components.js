@@ -589,11 +589,17 @@ const categoryStyles = {
   },
 };
 export function createMealCard(meal) {
+  const slug = meal.name
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
   return `
-        
         <div
               class="recipe-card bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all cursor-pointer group"
-              data-meal-id="${meal.id}"
+                 data-meal-id="${meal.id}"
+                data-meal-slug="${slug}"
             >
               <div class="relative h-48 overflow-hidden">
                 <img

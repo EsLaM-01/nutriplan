@@ -30,8 +30,24 @@ export default class Router {
     window.location.hash = `/${path}`;
   }
 
+  navigateToMeal(slug) {
+    window.location.hash = `/meal/${slug}`;
+  }
+
   handleCurrentRoute() {
     const hash = window.location.hash.replace("#/", "");
+
+    const mealMatch = hash.match(/^meal\/(.+)$/);
+
+    if (mealMatch) {
+      const mealSlug = mealMatch[1];
+
+      if (this.routes.meal) {
+        this.routes.meal(mealSlug);
+      }
+
+      return;
+    }
 
     const pageMap = {
       meals: "meals",

@@ -269,14 +269,12 @@ function setupSearch() {
 }
 function setupMealCards() {
   const recipesGrid = document.getElementById("recipes-grid");
-
   recipesGrid.addEventListener("click", (event) => {
     const card = event.target.closest("[data-meal-id]");
-
     if (!card) return;
-
     const mealId = card.dataset.mealId;
-
+    const mealSlug = card.dataset.mealSlug;
+    router.navigateToMeal(mealSlug);
     loadMealDetails(mealId);
   });
 }
@@ -312,6 +310,34 @@ async function loadMealDetails(mealId) {
     mealDetailsUI.renderNutrition(nutrition);
   } catch (error) {
     console.error("Failed to load meal details:", error);
+  }
+}
+async function loadMealBySlug(slug) {
+  try {
+    showMealDetails();
+
+    const meals = await api.getMeals();
+
+    const meal = meals.find((item) => {
+      const mealSlug = item.name
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9\s-]/g, "")
+        .replace(/\s+/g, "-")
+        .replace(/-+/g, "-");
+
+      return mealSlug === slug;
+    });
+
+    if (!meal) {
+      console.error("Meal not found:", slug);
+      showMeals();
+      return;
+    }
+
+    await loadMealDetails(meal.id);
+  } catch (error) {
+    console.error("Failed to load meal by slug:", error);
   }
 }
 function showMealDetails() {
@@ -350,13 +376,29 @@ function showFoodLog() {
 
   foodLogUI.loadMeals();
 }
+// function showMeals() {
+//   document.getElementById("foodlog-section").classList.add("hidden");
+
+//   document.getElementById("search-filters-section").classList.remove("hidden");
+//   document.getElementById("meal-categories-section").classList.remove("hidden");
+//   document.getElementById("all-recipes-section").classList.remove("hidden");
+//   document.getElementById("products-section").classList.add("hidden");
+// }
 function showMeals() {
   document.getElementById("foodlog-section").classList.add("hidden");
+  document.getElementById("meal-details").classList.add("hidden");
 
   document.getElementById("search-filters-section").classList.remove("hidden");
+
   document.getElementById("meal-categories-section").classList.remove("hidden");
+
   document.getElementById("all-recipes-section").classList.remove("hidden");
+
   document.getElementById("products-section").classList.add("hidden");
+
+  document.getElementById("page-title").textContent = "Meals & Recipes";
+  document.getElementById("page-subtitle").textContent =
+    "Discover delicious and nutritious recipes tailored for you";
 }
 function showScanner() {
   document.getElementById("foodlog-section").classList.add("hidden");
@@ -370,6 +412,7 @@ const router = new Router({
   meals: showMeals,
   foodlog: showFoodLog,
   scanner: showScanner,
+  meal: loadMealBySlug,
 });
 
 router.init();
