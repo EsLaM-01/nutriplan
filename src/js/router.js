@@ -46,6 +46,8 @@ export default class Router {
         this.routes.meal(mealSlug);
       }
 
+      this.updateActiveLink("meal");
+
       return;
     }
 
@@ -60,6 +62,28 @@ export default class Router {
 
     if (route) {
       route();
+      this.updateActiveLink(page);
     }
+  }
+  updateActiveLink(page) {
+    const links = document.querySelectorAll(".page-btn");
+
+    links.forEach((link) => {
+      const isActive =
+        link.dataset.page === page ||
+        (page === "meal" && link.dataset.page === "meals");
+
+      link.classList.toggle("bg-emerald-50", isActive);
+      link.classList.toggle("text-emerald-700", isActive);
+
+      link.classList.toggle("text-gray-600", !isActive);
+
+      const text = link.querySelector("span");
+
+      if (text) {
+        text.classList.toggle("font-semibold", isActive);
+        text.classList.toggle("font-medium", !isActive);
+      }
+    });
   }
 }
