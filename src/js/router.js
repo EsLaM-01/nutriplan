@@ -25,19 +25,25 @@ export default class Router {
 
     if (!route) return;
 
-    window.location.hash = page;
+    const path = page === "foodlog" ? "food-log" : page;
+
+    window.location.hash = `/${path}`;
   }
 
   handleCurrentRoute() {
-    const hash = window.location.hash.replace("#/", "").replace("#", "");
+    const hash = window.location.hash.replace("#/", "");
 
-    const page = hash || "meals";
+    const pageMap = {
+      meals: "meals",
+      scanner: "scanner",
+      "food-log": "foodlog",
+    };
+
+    const page = pageMap[hash] || "meals";
     const route = this.routes[page];
 
     if (route) {
       route();
-    } else {
-      window.location.hash = "meals";
     }
   }
 }
