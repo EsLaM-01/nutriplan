@@ -432,6 +432,74 @@ function setupMobileMenu() {
   closeButton.addEventListener("click", closeMenu);
   overlay.addEventListener("click", closeMenu);
 }
+function setupViewToggle() {
+  const gridViewBtn = document.getElementById("grid-view-btn");
+  const listViewBtn = document.getElementById("list-view-btn");
+  const recipesGrid = document.getElementById("recipes-grid");
+
+  if (!gridViewBtn || !listViewBtn || !recipesGrid) return;
+
+  gridViewBtn.addEventListener("click", () => {
+    recipesGrid.classList.remove("flex", "flex-col");
+    recipesGrid.classList.add("grid", "grid-cols-4");
+
+    gridViewBtn.classList.add("bg-white", "rounded-md", "shadow-sm");
+    listViewBtn.classList.remove("bg-white", "rounded-md", "shadow-sm");
+
+    gridViewBtn.querySelector("i").classList.remove("text-gray-500");
+    gridViewBtn.querySelector("i").classList.add("text-gray-700");
+
+    listViewBtn.querySelector("i").classList.remove("text-gray-700");
+    listViewBtn.querySelector("i").classList.add("text-gray-500");
+
+    document.querySelectorAll(".recipe-card").forEach((card) => {
+      card.classList.add("list-card");
+
+      const imageContainer = card.querySelector(".relative");
+      const image = card.querySelector("img");
+
+      if (imageContainer) {
+        imageContainer.classList.remove("h-48");
+        imageContainer.classList.add("w-40", "h-32", "shrink-0");
+      }
+
+      if (image) {
+        image.classList.remove("w-full", "h-full");
+        image.classList.add("w-full", "h-full", "object-cover");
+      }
+    });
+  });
+
+  listViewBtn.addEventListener("click", () => {
+    recipesGrid.classList.remove("grid", "grid-cols-4");
+    recipesGrid.classList.add("flex", "flex-col");
+
+    listViewBtn.classList.add("bg-white", "rounded-md", "shadow-sm");
+    gridViewBtn.classList.remove("bg-white", "rounded-md", "shadow-sm");
+
+    listViewBtn.querySelector("i").classList.remove("text-gray-500");
+    listViewBtn.querySelector("i").classList.add("text-gray-700");
+
+    gridViewBtn.querySelector("i").classList.remove("text-gray-700");
+    gridViewBtn.querySelector("i").classList.add("text-gray-500");
+
+    document.querySelectorAll(".recipe-card").forEach((card) => {
+      card.classList.remove("list-card");
+
+      const imageContainer = card.querySelector(".relative");
+      const image = card.querySelector("img");
+
+      if (imageContainer) {
+        imageContainer.classList.remove("w-40", "h-32", "shrink-0");
+        imageContainer.classList.add("h-48");
+      }
+
+      if (image) {
+        image.classList.add("w-full", "h-full", "object-cover");
+      }
+    });
+  });
+}
 setupMobileMenu();
 getAreas();
 getMeals();
@@ -442,6 +510,7 @@ setupCategoryViewAll();
 setupAreaDrag();
 setupSearch();
 setupMealCards();
+setupViewToggle();
 mealDetailsBackButton();
 window.addEventListener("load", () => {
   const loadingOverlay = document.getElementById("app-loading-overlay");
