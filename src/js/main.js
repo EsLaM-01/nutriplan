@@ -415,7 +415,6 @@ const router = new Router({
   meal: loadMealBySlug,
 });
 
-router.init();
 getAreas();
 getMeals();
 getCategories();
@@ -434,3 +433,4 @@ window.addEventListener("load", () => {
     loadingOverlay.classList.add("hidden");
   }, 500);
 });
+router.init();
