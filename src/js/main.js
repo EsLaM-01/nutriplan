@@ -414,7 +414,25 @@ const router = new Router({
   scanner: showScanner,
   meal: loadMealBySlug,
 });
-
+function setupMobileMenu() {
+  const menuButton = document.getElementById("header-menu-btn");
+  const closeButton = document.getElementById("sidebar-close-btn");
+  const sidebar = document.getElementById("sidebar");
+  const overlay = document.getElementById("sidebar-overlay");
+  if (!menuButton || !closeButton || !sidebar || !overlay) return;
+  const openMenu = () => {
+    sidebar.classList.add("open");
+    overlay.classList.add("open");
+  };
+  const closeMenu = () => {
+    sidebar.classList.remove("open");
+    overlay.classList.remove("open");
+  };
+  menuButton.addEventListener("click", openMenu);
+  closeButton.addEventListener("click", closeMenu);
+  overlay.addEventListener("click", closeMenu);
+}
+setupMobileMenu();
 getAreas();
 getMeals();
 getCategories();
