@@ -1,0 +1,28 @@
+/* .loading {
+  display: none;
+} */
+#category-swipe-hint i:first-child {
+  animation: arrowLeft 2s ease-in-out infinite;
+}
+
+#category-swipe-hint i:last-child {
+  animation: arrowRight 2s ease-in-out infinite;
+}
+@keyframes arrowLeft {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-6px);
+  }
+}
+@keyframes arrowRight {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(6px);
+  }
+}
