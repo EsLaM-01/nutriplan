@@ -68,16 +68,28 @@ async function getCategories() {
     console.error("Failed to load categories:", error);
   }
 }
+
 function renderMeals(meals) {
   const recipesGrid = document.getElementById("recipes-grid");
+  const recipesCount = document.getElementById("recipes-count");
 
   if (!meals || meals.length === 0) {
     recipesGrid.innerHTML = createEmptyState("No meals found");
+
+    if (recipesCount) {
+      recipesCount.textContent = "Showing 0 recipes";
+    }
+
     return;
   }
 
   recipesGrid.innerHTML = meals.map(createMealCard).join("");
+
+  if (recipesCount) {
+    recipesCount.textContent = `Showing ${meals.length} recipes`;
+  }
 }
+
 function renderCategories() {
   const categoriesGrid = document.getElementById("categories-grid");
 
